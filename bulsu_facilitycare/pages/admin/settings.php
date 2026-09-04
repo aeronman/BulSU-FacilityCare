@@ -10,7 +10,7 @@ if (!$currentUser || !$auth->isAdmin()) {
     redirect('/admin/dashboard');
 }
 
-$settings = $func->db->fetchAll("SELECT * FROM settings ORDER BY setting_key");
+$settings = $func->getDb()->fetchAll("SELECT * FROM settings ORDER BY setting_key");
 
 $pageTitle = 'Settings';
 ob_start();

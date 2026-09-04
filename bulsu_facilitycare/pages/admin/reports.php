@@ -180,6 +180,3 @@ ob_start();
 <?php
 $content = ob_get_clean();
 renderPage($pageTitle, $content);
-
-
-}

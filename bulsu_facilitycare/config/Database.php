@@ -44,7 +44,18 @@ class Database {
 
     public function query($sql, $params = []) {
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
+        $boundParams = [];
+        foreach ($params as $key => $value) {
+            $boundParams[is_int($key) ? $key + 1 : ':' . $key] = $value;
+        }
+        foreach ($boundParams as $key => $value) {
+            if (is_int($value)) {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
+        }
+        $stmt->execute();
         return $stmt;
     }
 

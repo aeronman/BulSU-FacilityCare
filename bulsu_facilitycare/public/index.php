@@ -106,7 +106,7 @@ function requireRole($roles) {
 
 function loadPage($handler, $params = []) {
     global $auth;
-    $baseDir = __DIR__ . '/pages';
+    $baseDir = dirname(__DIR__) . '/pages';
 
     switch ($handler) {
         case 'login':
@@ -272,7 +272,7 @@ function loadPage($handler, $params = []) {
             require_once $baseDir . '/api/report.php';
             break;
 
-        case 'maintenance_update:
+        case 'maintenance_update':
             requireRole([ROLE_MAINTENANCE, ROLE_ADMIN]);
             require_once $baseDir . '/actions/maintenance_update.php';
             break;

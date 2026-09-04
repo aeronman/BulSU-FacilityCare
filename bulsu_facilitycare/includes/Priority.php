@@ -6,6 +6,8 @@
  *  - Location Criticality, Impact on Operations
  *  - Report Frequency, Issue Category
  */
+
+class Priority {
     private $db;
     private $thresholds;
 

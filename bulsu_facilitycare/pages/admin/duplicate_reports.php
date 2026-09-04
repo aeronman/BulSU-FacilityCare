@@ -14,7 +14,7 @@ $showMerged = isset($_GET['merged']) ? (bool)$_GET['merged'] : false;
 $detectedDuplicates = [];
 
 if ($showMerged) {
-    $detectedDuplicates = $func->db->fetchAll(
+    $detectedDuplicates = $func->getDb()->fetchAll(
         "SELECT d.*, r1.report_number as dup_report_number, r1.title as dup_title,
                 r2.report_number as orig_report_number, r2.title as orig_title,
                 ru.full_name as reviewed_by_name
@@ -40,7 +40,7 @@ if ($showMerged) {
             $dupReport = $func->getReportById($dup['id']);
             if ($dupReport['status_code'] === 'rejected') continue;
 
-            $existingRecord = $func->db->fetch(
+            $existingRecord = $func->getDb()->fetch(
                 "SELECT id FROM duplicate_reports WHERE report_id = :report_id AND original_report_id = :original_id",
                 ['report_id' => $dup['id'], 'original_id' => $report['id']]
             );

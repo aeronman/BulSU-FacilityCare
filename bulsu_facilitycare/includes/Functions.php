@@ -6,6 +6,10 @@
 class Functions {
     private $db;
 
+    public function getDb() {
+        return $this->db;
+    }
+
     public function __construct() {
         $this->db = Database::getInstance();
     }
@@ -177,6 +181,9 @@ class Functions {
         $photoPath = null;
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_NO_FILE) {
             $photoPath = $this->uploadPhoto($_FILES['photo']);
+            if (!$photoPath) {
+                $photoPath = null;
+            }
         }
 
         $affectedUsers = isset($data['affected_users']) ? $data['affected_users'] : null;
@@ -317,8 +324,7 @@ class Functions {
                 $whereClause
                 ORDER BY r.created_at DESC
                 LIMIT :limit OFFSET :offset";
-
-        $stmt = $this->db->query($sql, $params);
+        $stmt = $this->db->query($sql, $params + ['limit' => $limit, 'offset' => $offset]);
         return $stmt->fetchAll();
     }
 
@@ -459,9 +465,9 @@ class Functions {
              FROM notifications n
              LEFT JOIN reports r ON n.report_id = r.id
              $where
-             ORDER BY n.created_at DESC
-             LIMIT :limit",
-            $params
+              ORDER BY n.created_at DESC
+              LIMIT :limit",
+            $params + ['limit' => $limit]
         );
     }
 
@@ -530,9 +536,9 @@ class Functions {
                 SUM(CASE WHEN status_code = 'validated' OR status_code = 'assigned' OR status_code = 'ongoing' THEN 1 ELSE 0 END) as in_progress,
                 SUM(CASE WHEN status_code = 'resolved' OR status_code = 'closed' THEN 1 ELSE 0 END) as resolved,
                 SUM(CASE WHEN status_code = 'rejected' THEN 1 ELSE 0 END) as rejected,
-                SUM(CASE WHEN priority_level = 'high' AND status_code NOT IN ('resolved','closed','rejected') THEN 1 ELSE 0 END) as high_priority,
+                SUM(CASE WHEN priority_level = 'high' AND status_code NOT IN ('resolved','closed','rejected') THEN 1 ELSE 0 END) as `high_priority`,
                 SUM(CASE WHEN priority_level = 'medium' AND status_code NOT IN ('resolved','closed','rejected') THEN 1 ELSE 0 END) as medium_priority,
-                SUM(CASE WHEN priority_level = 'low' AND status_code NOT IN ('resolved','closed','rejected') THEN 1 ELSE 0 END) as low_priority,
+                SUM(CASE WHEN priority_level = 'low' AND status_code NOT IN ('resolved','closed','rejected') THEN 1 ELSE 0 END) as `low_priority`,
                 SUM(CASE WHEN safety_risk = 'severe' OR safety_risk = 'moderate' THEN 1 ELSE 0 END) as safety_risks
              FROM reports
              $whereClause",
@@ -569,7 +575,7 @@ class Functions {
              $whereClause
              ORDER BY r.created_at DESC
              LIMIT :limit",
-            $params
+             $params + ['limit' => $limit]
         );
     }
 
@@ -936,7 +942,7 @@ class Functions {
     }
 
     public function getAllRoles() {
-        return $this->db->fetchAll("SELECT * FROM roles ORDER BY display_order, name");
+        return $this->db->fetchAll("SELECT * FROM roles ORDER BY name");
     }
 
     public function getReportStatusCountByMonth($months = 6) {
@@ -1037,5 +1043,4 @@ class Functions {
             '/report/' . $reportId
         );
     }
-}
 }

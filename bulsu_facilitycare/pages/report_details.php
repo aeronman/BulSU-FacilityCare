@@ -404,7 +404,7 @@ ob_start();
                     <div class="card-body p-0">
                         <div class="timeline">
                             <?php
-                            $history = $func->db->fetchAll(
+                                $history = $func->getDb()->fetchAll(
                                 "SELECT h.*, u.full_name, u2.role_id, r.name as role_name
                                  FROM report_history h
                                  LEFT JOIN users u ON h.changed_by = u.id
