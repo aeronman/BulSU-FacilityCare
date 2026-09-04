@@ -21,6 +21,12 @@ if ($basePath === '/' || $basePath === '\\') {
 if ($basePath !== '' && strpos($requestUri, $basePath) === 0) {
     $requestUri = substr($requestUri, strlen($basePath));
 }
+
+// Normalize /index.php to /
+if ($requestUri === '/index.php') {
+    $requestUri = '/';
+}
+
 if ($requestUri === '' || $requestUri === false) {
     $requestUri = '/';
 }
@@ -29,6 +35,7 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 $routes = [
     'GET' => [
+        '/' => 'login',
         '/login' => 'login',
         '/register' => 'register',
         '/logout' => 'logout',
@@ -290,11 +297,6 @@ function loadPage($handler, $params = []) {
         case 'api_report':
             requireLogin();
             require_once $baseDir . '/api/report.php';
-            break;
-
-        case 'maintenance_update':
-            requireRole([ROLE_MAINTENANCE, ROLE_ADMIN]);
-            require_once $baseDir . '/actions/maintenance_update.php';
             break;
 
         case 'admin_users':
