@@ -191,7 +191,7 @@ class Functions {
             $affectedUsers = implode(', ', $affectedUsers);
         }
 
-        $reportId = $this->db->query(
+        $this->db->query(
             "INSERT INTO reports (report_number, title, description, category_id, facility_id,
              urgency, safety_risk, severity, affected_users, photo_path, additional_info,
              status_code, reporter_id)
@@ -214,6 +214,8 @@ class Functions {
                 'reporter_id' => $_SESSION['user_id'],
             ]
         );
+
+        $reportId = $this->db->lastInsertId();
 
         $this->db->query(
             "INSERT INTO report_history (report_id, status_code, changed_by, notes)

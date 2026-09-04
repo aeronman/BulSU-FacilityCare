@@ -405,7 +405,7 @@ ob_start();
                         <div class="timeline">
                             <?php
                                 $history = $func->getDb()->fetchAll(
-                                "SELECT h.*, u.full_name, u2.role_id, r.name as role_name
+                                "SELECT h.*, u.full_name, r.name as role_name
                                  FROM report_history h
                                  LEFT JOIN users u ON h.changed_by = u.id
                                  LEFT JOIN roles r ON u.role_id = r.id

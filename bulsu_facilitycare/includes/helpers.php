@@ -4,6 +4,12 @@
  * Each page sets variables then includes the layout
  */
 
+function formatDate($datetime) {
+    if (!$datetime) return '';
+    $dt = new DateTime($datetime);
+    return $dt->format('M j, Y g:i A');
+}
+
 function renderPage($title, $content, $pageCss = '', $pageJs = '') {
     global $auth, $currentUser;
     ?>

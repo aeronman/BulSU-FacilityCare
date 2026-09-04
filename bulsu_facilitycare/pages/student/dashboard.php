@@ -109,7 +109,7 @@ ob_start();
                                             </h4>
                                             <p class="text-muted small mb-0">
                                                 <i class="fas fa-map-marker-alt me-1"></i>
-                                                <?php echo htmlspecialchars($report['location_name'] . ', ' . $report['building']); ?>
+                                                <?php echo htmlspecialchars($report['location_name'] ?? '' . ', ' . $report['building'] ?? ''); ?>
                                             </p>
                                         </div>
                                         <div class="col-md-4 text-md-end">
@@ -166,7 +166,7 @@ ob_start();
                                                 </a>
                                             </h4>
                                             <p class="text-muted small mb-0">
-                                                <?php echo htmlspecialchars($report['location_name'] . ', ' . $report['building']); ?>
+                                                <?php echo htmlspecialchars($report['location_name'] ?? '' . ', ' . $report['building'] ?? ''); ?>
                                             </p>
                                         </div>
                                     </div>

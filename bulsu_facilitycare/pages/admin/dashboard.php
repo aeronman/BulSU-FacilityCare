@@ -131,14 +131,13 @@ ob_start();
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
                                     <span class="text-danger fw-medium">High</span>
-                                    <strong class="text-danger"><?php echo $priorityStats ? (
-                                        ['high', 'medium', 'low']
-                                    ) : 0; ?></strong>
-                                </div>
-                                <?php
-                                $pMap = [];
-                                foreach ($priorityStats as $p) $pMap[$p['priority_level']] = $p['count'];
-                                ?>
+                                    <?php
+                                    $pMap = [];
+                                    foreach ($priorityStats as $p) $pMap[$p["priority_level"]] = $p["count"];
+                                    ?>
+                                    <strong class="text-danger">high: <?php echo $pMap["high"] ?? 0; ?></strong>
+                                    <strong class="text-warning">medium: <?php echo $pMap["medium"] ?? 0; ?></strong>
+                                    <strong class="text-success">low: <?php echo $pMap["low"] ?? 0; ?></strong>
                             </div>
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
@@ -197,9 +196,9 @@ ob_start();
                                         <tr>
                                             <td class="fw-medium"><?php echo htmlspecialchars($r['report_number']); ?></td>
                                             <td><?php echo htmlspecialchars($r['title']); ?></td>
-                                            <td class="text-muted small"><?php echo htmlspecialchars($r['location_name'] . ', ' . $r['building']); ?></td>
+                                            <td class="text-muted small"><?php echo htmlspecialchars($r['location_name'] ?? '' . ', ' . $r['building'] ?? ''); ?></td>
                                             <td>
-                                                <span class="badge bg-danger fs-6"><?php echo $r['total_score']; ?></span>
+                                                <span class="badge bg-danger fs-6"><?php echo $r['total_score'] ?? 0; ?></span>
                                             </td>
                                             <td><?php echo getReportStatusBadge($r['status_code']); ?></td>
                                             <td class="text-end">
