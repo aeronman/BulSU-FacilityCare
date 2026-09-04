@@ -6,6 +6,25 @@
 require_once __DIR__ . '/../config/config.php';
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$scriptName = $_SERVER['SCRIPT_NAME'];
+
+// Detect base path (e.g., /bulsu_facilitycare/public or just /)
+$basePath = dirname($scriptName);
+if ($basePath === '/' || $basePath === '\\') {
+    $basePath = '';
+} else {
+    // Remove trailing slashes
+    $basePath = rtrim($basePath, '/\\');
+}
+
+// Strip base path from request URI
+if ($basePath !== '' && strpos($requestUri, $basePath) === 0) {
+    $requestUri = substr($requestUri, strlen($basePath));
+}
+if ($requestUri === '' || $requestUri === false) {
+    $requestUri = '/';
+}
+
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 $routes = [

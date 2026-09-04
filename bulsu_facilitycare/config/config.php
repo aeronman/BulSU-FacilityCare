@@ -5,7 +5,7 @@
 
 define('APP_NAME', 'BulSU FacilityCare');
 define('APP_TAGLINE', 'Facility Maintenance Reporting & Risk Prioritization System');
-define('APP_BASE_URL', 'http://localhost:8000');
+define('APP_BASE_URL', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST']);
 define('APP_ROOT', dirname(__DIR__));
 define('UPLOAD_DIR', APP_ROOT . '/public/assets/img/uploads');
 define('UPLOAD_URL', '/assets/img/uploads');
