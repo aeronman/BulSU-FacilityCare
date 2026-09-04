@@ -32,7 +32,9 @@ $routes = [
         '/admin/users' => 'admin_users',
         '/admin/categories' => 'admin_categories',
         '/admin/settings' => 'admin_settings',
-        '/maintenance/dashboard' => 'maintenance_dashboard',
+        '/admin/categories/store' => 'category_store',
+        '/api/facility/{id}' => 'api_facility',
+        '/api/report/{id}' => 'api_report',
     ],
     'POST' => [
         '/login' => 'login_post',
@@ -43,8 +45,9 @@ $routes = [
         '/admin/validate/{id}' => 'admin_validate_report',
         '/admin/duplicates/check' => 'admin_check_duplicates',
         '/admin/duplicates/merge' => 'admin_merge_duplicates',
+        '/admin/duplicates/not-duplicate' => 'admin_not_duplicate',
         '/admin/facilities/store' => 'facility_store',
-        '/admin/facilities/update/{id}' => 'facility_update',
+        '/admin/categories/store' => 'category_store',
         '/admin/users/store' => 'user_store',
         '/admin/settings/update' => 'settings_update',
         '/maintenance/report/{id}/update' => 'maintenance_update',
@@ -214,19 +217,9 @@ function loadPage($handler, $params = []) {
             require_once $baseDir . '/actions/validate_report.php';
             break;
 
-        case 'admin_duplits':
-            requireRole(ROLE_ADMIN);
-            require_once $baseDir . '/admin/duplicate_reports.php';
-            break;
-
         case 'admin_duplicates':
             requireRole(ROLE_ADMIN);
             require_once $baseDir . '/admin/duplicate_reports.php';
-            break;
-
-        case 'admin_check_duplicates':
-            requireRole(ROLE_ADMIN);
-            require_once $baseDir . '/actions/check_duplicates.php';
             break;
 
         case 'admin_merge_duplicates':
@@ -261,7 +254,27 @@ function loadPage($handler, $params = []) {
 
         case 'facility_update':
             requireRole(ROLE_ADMIN);
-            require_once $baseDir . '/actions/facility_update.php';
+            require_once $baseDir . '/actions/facility_store.php';
+            break;
+
+        case 'category_store':
+            requireRole(ROLE_ADMIN);
+            require_once $baseDir . '/actions/category_store.php';
+            break;
+
+        case 'api_facility':
+            requireLogin();
+            require_once $baseDir . '/api/facility.php';
+            break;
+
+        case 'api_report':
+            requireLogin();
+            require_once $baseDir . '/api/report.php';
+            break;
+
+        case 'maintenance_update:
+            requireRole([ROLE_MAINTENANCE, ROLE_ADMIN]);
+            require_once $baseDir . '/actions/maintenance_update.php';
             break;
 
         case 'admin_users':
